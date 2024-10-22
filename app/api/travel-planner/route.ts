@@ -37,17 +37,32 @@ export async function POST(request: Request) {
 
     // Construct prompt based on the provided data
     const prompt = `
-      Plan a trip from ${fromLocation} to ${toLocation} for ${numMembers} people. 
-      It will be a ${numDays}-day trip using ${travelType} travel. 
-      The travelers are ${travelGroupType}, and they are interested in ${interests.join(", ")}. 
-      Provide a brief itinerary with recommendations for must-see attractions, food options, and hidden gems.
+      Plan a detailed ${numDays}-day trip from ${fromLocation} to ${toLocation} for a group of ${numMembers} travelers. They will be traveling by ${travelType} and are a group of ${travelGroupType}. The travelers are interested in ${interests.join(", ")}. Create a personalized itinerary that includes:
+      - Must-see attractions for each day.
+      - Recommended food and dining spots, including local specialties.
+      - Hidden gems and off-the-beaten-path experiences.
+      - Travel tips and logistical advice for smooth navigation.
+      - Suggestions for activities that align with their preferences.
+      Ensure the itinerary is well-balanced, tailored to their interests, and offers a memorable travel experience.
     `;
 
     // Prepare the OpenAI API request
     const messages = [
       {
         role: "system",
-        content: "You are an AI travel assistant that generates personalized travel itineraries.",
+        content: `You are an AI travel planner assistant. Your role is to generate personalized travel itineraries based on user input. The user will provide details such as the starting location, destination, number of travelers, travel group type, travel mode, trip duration, and specific interests. Based on this information, create a comprehensive and enjoyable itinerary for the user, which includes:
+                  - A detailed day-by-day schedule for the trip.
+                  - Recommended attractions, dining spots, and activities based on user preferences.
+                  - Hidden gems and off-the-beaten-path experiences for each destination.
+                  - Local travel tips, including advice on transportation and accommodations.
+                  - Suggestions for wine and beer tasting venues.
+                  - Logistics such as travel schedules and local transportation options.
+                  - A detailed budget breakdown for the trip.
+                  - A list of recommended hotels and accommodations.
+                  - A list of recommended activities and experiences.
+                  - Give me links to the places mentioned in the itinerary.
+                  - links for booking tickets to the places mentioned in the itinerary.
+                  Ensure the itinerary is tailored to the users group type  and maximizes their travel experience.`,
       },
       { role: "user", content: prompt },
     ];
@@ -59,7 +74,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4", // Ensure you're using the correct model
+        model: "gpt-4o-mini", // Ensure you're using the correct model
         messages,
         temperature: 0.7,
       }),
