@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ShareButton } from "@/components/share-button";
 
 interface TravelPlan {
   id: string;
@@ -62,10 +64,11 @@ export default async function ItineraryPage({ params }: { params: { id: string }
               <h3 className="text-xl font-semibold mb-2">Itinerary</h3>
               <p className="whitespace-pre-wrap">{plan.itinerary}</p>
             </div>
-            <div className="mt-6 text-center">
-              <Link href="/history" className="text-blue-500 hover:underline">
-                Back to History
+            <div className="mt-6 flex justify-between">
+              <Link href="/history" passHref>
+                <Button variant="outline">Back to History</Button>
               </Link>
+              <ShareButton id={plan.id} />
             </div>
           </CardContent>
         </Card>

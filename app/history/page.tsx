@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+import { TravelPlanCard } from "@/components/travel-plan-card";
 
 interface TravelPlan {
   id: string;
@@ -26,6 +25,7 @@ export default async function HistoryPage() {
   const { data: travelPlans, error } = await supabase
     .from('travel_plans')
     .select('id, from_location, to_location, number_of_days, created_at')
+    .eq('email_id', user.email)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -39,18 +39,7 @@ export default async function HistoryPage() {
         {travelPlans && travelPlans.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {travelPlans.map((plan: TravelPlan) => (
-              <Card key={plan.id}>
-                <CardHeader>
-                  <CardTitle>{plan.from_location} to {plan.to_location}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>{plan.number_of_days} days</p>
-                  <p>Created: {new Date(plan.created_at).toLocaleDateString()}</p>
-                  <Link href={`/itinerary/${plan.id}`} className="text-blue-500 hover:underline">
-                    View Itinerary
-                  </Link>
-                </CardContent>
-              </Card>
+              <TravelPlanCard key={plan.id} plan={plan} />
             ))}
           </div>
         ) : (
