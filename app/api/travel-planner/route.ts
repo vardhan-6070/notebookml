@@ -6,6 +6,16 @@ export async function POST(request: Request) {
   try {
     const supabase = createClient();
 
+    // Get the current user
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user || !user.email) {
+      return NextResponse.json(
+        { message: "User not authenticated or email not available" },
+        { status: 401 }
+      );
+    }
+
     // Extract form data from the request body
     const {
       fromLocation,
@@ -74,7 +84,8 @@ export async function POST(request: Request) {
         travel_type: travelType,
         number_of_days: numDays,
         interests: interests,
-        itinerary: result
+        itinerary: result,
+        email_id: user.email  // Add the user's email to the database entry
       })
       .select();
 
