@@ -27,7 +27,6 @@ export default async function EditPage({ params }: { params: { id: string } }) {
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto py-10">
-        <h1 className="text-4xl font-bold text-center mb-6">Edit Travel Plan</h1>
         <EditTravelPlanForm travelPlan={travelPlan} />
       </div>
     </main>

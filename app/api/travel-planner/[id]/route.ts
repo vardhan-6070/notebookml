@@ -14,7 +14,16 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
   const { data, error } = await supabase
     .from('travel_plans')
-    .update(body)
+    .update({
+      from_location: body.from_location,
+      to_location: body.to_location,
+      number_of_members: body.number_of_members,
+      travel_type: body.travel_type,
+      travel_group_type: body.travel_group_type,
+      number_of_days: body.number_of_days,
+      interests: body.interests,
+      itinerary: body.itinerary
+    })
     .eq('id', params.id)
     .eq('email_id', user.email)
     .select();
