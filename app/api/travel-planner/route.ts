@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
 // Define the API route function
 export async function POST(request: Request) {
   try {
+    const supabase = createClient();
+
     // Extract form data from the request body
     const {
       fromLocation,
@@ -60,12 +63,31 @@ export async function POST(request: Request) {
       throw new Error("Failed to generate travel plan.");
     }
 
+    // Store the inputs and generated plan in the Supabase database
+    const { data: insertedData, error: insertError } = await supabase
+      .from('travel_plans')
+      .insert({
+        from_location: fromLocation,
+        to_location: toLocation,
+        number_of_members: numMembers,
+        travel_group_type: travelGroupType,
+        travel_type: travelType,
+        number_of_days: numDays,
+        interests: interests,
+        itinerary: result
+      })
+      .select();
+
+    if (insertError) {
+      throw new Error(`Failed to store travel plan: ${insertError.message}`);
+    }
+
     // Return the result as a JSON response
-    return NextResponse.json({ itinerary: result }, { status: 200 });
+    return NextResponse.json({ itinerary: result, id: insertedData[0].id }, { status: 200 });
   } catch (error) {
     const errorMessage = (error as Error).message;
     return NextResponse.json(
-      { message: "Error generating travel plan", error: errorMessage },
+      { message: "Error generating or storing travel plan", error: errorMessage },
       { status: 500 }
     );
   }
