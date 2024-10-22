@@ -177,7 +177,7 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
             name="itinerary"
             value={formData.itinerary}
             onChange={handleInputChange}
-            rows={5}
+            rows={20}
           />
         </div>
         <Button type="submit" className="w-full">Update Travel Plan</Button>

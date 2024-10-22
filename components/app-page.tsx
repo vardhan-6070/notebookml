@@ -193,8 +193,8 @@ export function Page() {
                 />
               </div>
             </div>
-            <CardFooter className="flex justify-center">
-              <Button type="submit" className="w-full" disabled={loading}>
+            <CardFooter className="pt-6 pb-0 px-0">
+              <Button type="submit" className="w-full md:w-1/2" disabled={loading}>
                 {loading ? "Planning..." : "Plan My Trip"}
               </Button>
             </CardFooter>
