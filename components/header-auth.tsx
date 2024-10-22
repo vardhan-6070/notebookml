@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { Image, Video, User, Settings, LogOut } from "lucide-react";
+import { Image, Video, User, Settings, LogOut, History } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -60,6 +60,12 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center justify-end w-full p-4">
       <div className="flex items-center gap-4">
+        <Button asChild variant="ghost" size="icon">
+          <Link href="/history">
+            <History className="h-5 w-5" />
+            <span className="sr-only">History</span>
+          </Link>
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

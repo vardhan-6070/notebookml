@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly implemented
+import { useRouter } from "next/navigation";
 
 export function Page() {
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export function Page() {
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Handle form input changes
   const handleInputChange = (
@@ -68,7 +70,6 @@ export function Page() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setItinerary(null);
 
     // Extract checked interests into an array
     const selectedInterests = Object.keys(formData.interests).filter(
@@ -90,7 +91,10 @@ export function Page() {
       const data = await response.json();
 
       if (response.ok) {
-        setItinerary(data.itinerary);
+        // Store the itinerary in localStorage
+        localStorage.setItem("itinerary", data.itinerary);
+        // Redirect to the itinerary page
+        router.push("/itinerary");
       } else {
         setError(data.message || "Failed to generate travel plan.");
       }
