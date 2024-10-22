@@ -19,11 +19,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly implemented
 import { useRouter } from "next/navigation";
 
+interface FormData {
+  fromLocation: string;
+  toLocation: string;
+  numMembers: number;
+  travelType: string;
+  travelGroupType: string;
+  numDays: number;
+  interests: string[];
+}
+
 export function Page() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     fromLocation: "",
     toLocation: "",
     numMembers: 1,
@@ -38,7 +47,6 @@ export function Page() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Handle form input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -46,17 +54,6 @@ export function Page() {
     setFormData((prev) => ({
       ...prev,
       [id]: type === "number" ? parseInt(value) : value,
-    }));
-  };
-
-  // Handle checkbox changes
-  const handleCheckboxChange = (
-    id: keyof typeof formData.interests,
-    checked: boolean
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      interests: { ...prev.interests, [id]: checked },
     }));
   };
 
@@ -68,7 +65,6 @@ export function Page() {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -86,9 +82,7 @@ export function Page() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store the itinerary in localStorage
         localStorage.setItem("itinerary", data.itinerary);
-        // Redirect to the itinerary page
         router.push("/itinerary");
       } else {
         setError(data.message || "Failed to generate travel plan.");
@@ -194,7 +188,6 @@ export function Page() {
                 <Input
                   id="interests"
                   placeholder="MustSee, GreatFood, HiddenGems, WineBeer"
-          />
                   value={formData.interests.join(', ')}
                   onChange={handleInterestsChange}
                 />
