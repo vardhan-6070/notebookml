@@ -30,12 +30,7 @@ export function Page() {
     travelType: "",
     travelGroupType: "",
     numDays: 1,
-    interests: {
-      mustSee: false,
-      greatFood: false,
-      hiddenGems: false,
-      wineBeer: false,
-    },
+    interests: [],
   });
 
   const [loading, setLoading] = useState(false);
@@ -65,16 +60,19 @@ export function Page() {
     }));
   };
 
+  const handleInterestsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const interestsArray = e.target.value.split(',').map(item => item.trim());
+    setFormData(prev => ({
+      ...prev,
+      interests: interestsArray,
+    }));
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
-    // Extract checked interests into an array
-    const selectedInterests = Object.keys(formData.interests).filter(
-      (key) => formData.interests[key as keyof typeof formData.interests]
-    );
 
     try {
       const response = await fetch("/api/travel-planner", {
@@ -82,10 +80,7 @@ export function Page() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          interests: selectedInterests,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -158,9 +153,11 @@ export function Page() {
                     <SelectValue placeholder="Select travel mode" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="road">Road</SelectItem>
-                    <SelectItem value="air">Air</SelectItem>
-                    <SelectItem value="train">Train</SelectItem>
+                    <SelectItem value="Car">Car</SelectItem>
+                    <SelectItem value="Bike">Bike</SelectItem>
+                    <SelectItem value="Ship">Ship</SelectItem>
+                    <SelectItem value="Train">Train</SelectItem>
+                    <SelectItem value="Plane">Plane</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -178,6 +175,7 @@ export function Page() {
                     <SelectItem value="friends">Friends</SelectItem>
                     <SelectItem value="family">Family</SelectItem>
                     <SelectItem value="solo">Solo</SelectItem>
+                    <SelectItem value="Couple">Couple</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -192,27 +190,14 @@ export function Page() {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label>Interests</Label>
-                <div className="flex flex-col space-y-2">
-                  {(
-                    ["mustSee", "greatFood", "hiddenGems", "wineBeer"] as Array<
-                      keyof typeof formData.interests
-                    >
-                  ).map((interest) => (
-                    <div key={interest} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={interest}
-                        checked={formData.interests[interest]}
-                        onCheckedChange={(checked: boolean) =>
-                          handleCheckboxChange(interest, checked)
-                        }
-                      />
-                      <label htmlFor={interest} className="text-sm font-medium">
-                        {interest.replace(/([A-Z])/g, " $1")}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+                <Label htmlFor="interests">Interests</Label>
+                <Input
+                  id="interests"
+                  placeholder="MustSee, GreatFood, HiddenGems, WineBeer"
+          />
+                  value={formData.interests.join(', ')}
+                  onChange={handleInterestsChange}
+                />
               </div>
             </div>
             <CardFooter className="flex justify-center">

@@ -77,6 +77,14 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
     }));
   };
 
+  const handleInterestsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const interestsArray = e.target.value.split(',').map(item => item.trim());
+    setFormData(prev => ({
+      ...prev,
+      interests: interestsArray,
+    }));
+  };
+
   return (
     <div className="w-full mx-auto">
       <h2 className="text-3xl font-bold text-center mb-6">Edit Travel Plan</h2>
@@ -116,9 +124,15 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
               <SelectValue placeholder="Select travel type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="road">Road</SelectItem>
-              <SelectItem value="air">Air</SelectItem>
-              <SelectItem value="train">Train</SelectItem>
+              <SelectItem value="Car">Car</SelectItem>
+              <SelectItem value="Bike">Bike</SelectItem>
+              <SelectItem value="Ship">Ship</SelectItem>
+              <SelectItem value="Train">Train</SelectItem>
+              <SelectItem value="Plane">Plane</SelectItem>
+
+
+
+
             </SelectContent>
           </Select>
         </div>
@@ -132,6 +146,7 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
               <SelectItem value="friends">Friends</SelectItem>
               <SelectItem value="family">Family</SelectItem>
               <SelectItem value="solo">Solo</SelectItem>
+              <SelectItem value="Couple">Couple</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -146,19 +161,14 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
           />
         </div>
         <div className="space-y-2">
-          <Label>Interests</Label>
-          <div className="flex flex-wrap gap-2">
-            {["mustSee", "greatFood", "hiddenGems", "wineBeer"].map((interest) => (
-              <div key={interest} className="flex items-center space-x-2">
-                <Checkbox
-                  id={interest}
-                  checked={formData.interests.includes(interest)}
-                  onCheckedChange={(checked) => handleCheckboxChange(interest, checked as boolean)}
-                />
-                <Label htmlFor={interest}>{interest}</Label>
-              </div>
-            ))}
-          </div>
+          <Label htmlFor="interests">Interests</Label>
+          <Input
+            id="interests"
+            name="interests"
+            value={formData.interests.join(', ')}
+            onChange={handleInterestsChange}
+            placeholder="MustSee, GreatFood, HiddenGems, WineBeer"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="itinerary">Itinerary</Label>
