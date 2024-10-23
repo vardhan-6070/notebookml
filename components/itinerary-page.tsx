@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown"; // Import react-markdown
 
 export function ItineraryPage() {
   const [itinerary, setItinerary] = useState<string | null>(null);
@@ -27,16 +28,33 @@ export function ItineraryPage() {
     <div className="container mx-auto py-10">
       <Card className="w-full mx-auto">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">
+          <CardTitle className="text-3xl font-bold text-center mb-6">
             Your Travel Itinerary
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="p-4 bg-gray-100 rounded-md text-black">
-            <p className="whitespace-pre-wrap">{itinerary}</p>
+            <ReactMarkdown
+              components={{
+                p: ({ node, children }) => (
+                  <p className="mb- whitespace-pre-wrap">{children}</p> // Bottom margin for paragraphs
+                ),
+                h1: ({ node, children }) => (
+                  <h1 className="text-2xl font-bold mt-6">{children}</h1> // Margin above and below the H1
+                ),
+                h2: ({ node, children }) => (
+                  <h2 className="text-xl font-bold mt-6 ">{children}</h2> // Margin above and below the H2
+                ),
+                h3: ({ node, children }) => (
+                  <h3 className="text-lg font-bold mt-6">{children}</h3> // Margin above and below the H3
+                ),
+              }}
+            >
+              {itinerary}
+            </ReactMarkdown>
           </div>
           <div className="mt-6 text-center">
-            <Button onClick={() => router.push("/dashboard")}>
+            <Button onClick={() => router.push("/dashboard")} className="mt-4">
               Back to Planner
             </Button>
           </div>

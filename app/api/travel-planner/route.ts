@@ -61,7 +61,9 @@ export async function POST(request: Request) {
                   - A list of recommended hotels and accommodations.
                   - A list of recommended activities and experiences.
                   - Give me links to the places mentioned in the itinerary.
-                  - links for booking tickets to the places mentioned in the itinerary.
+                  - links for booking tickets for planes, trains, buses and to the places mentioned in the itinerary.
+                  - Always give me a trip plan for the round trip.
+                  - If the provided details are insufficient or it is not technically feasible to plan the trip, inform the user that it is not possible to create a trip plan with the current input. Clearly explain the reason, and suggest adjustments to the trip plan accordingly. Also, ensure to mention any modifications you have made in the final itinerary to keep the user informed.
                   Ensure the itinerary is tailored to the users group type  and maximizes their travel experience.`,
       },
       { role: "user", content: prompt },
