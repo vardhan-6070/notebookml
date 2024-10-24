@@ -37,17 +37,27 @@ export function ItineraryPage() {
             <ReactMarkdown
               components={{
                 p: ({ node, children }) => (
-                  <p className="mb- whitespace-pre-wrap">{children}</p> // Bottom margin for paragraphs
+                  <p className="mb-6 mt-4 whitespace-pre-wrap">{children}</p> // Margin bottom for paragraphs
                 ),
                 h1: ({ node, children }) => (
-                  <h1 className="text-2xl font-bold mt-6">{children}</h1> // Margin above and below the H1
+                  <h1 className="text-2xl font-bold mt-6 ">{children}</h1> // Margin above and below H1
                 ),
                 h2: ({ node, children }) => (
-                  <h2 className="text-xl font-bold mt-6 ">{children}</h2> // Margin above and below the H2
+                  <h2 className="text-xl font-bold mt-6 ">{children}</h2> // Margin above and below H2
                 ),
                 h3: ({ node, children }) => (
-                  <h3 className="text-lg font-bold mt-6">{children}</h3> // Margin above and below the H3
+                  <h3 className="text-lg font-bold mt-6 ">{children}</h3> // Margin above and below H3
                 ),
+                a: ({ node, href, children }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    {children}
+                  </a>
+                ), // Custom link styling
               }}
             >
               {itinerary}

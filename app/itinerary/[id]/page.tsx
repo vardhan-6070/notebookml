@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share-button";
+import ReactMarkdown from 'react-markdown';
 
 interface TravelPlan {
   id: string;
@@ -62,7 +63,34 @@ export default async function ItineraryPage({ params }: { params: { id: string }
             </div>
             <div className="p-4 bg-gray-100 rounded-md text-black">
               <h3 className="text-xl font-semibold mb-2">Itinerary</h3>
-              <p className="whitespace-pre-wrap">{plan.itinerary}</p>
+              <ReactMarkdown
+                components={{
+                  p: ({ node, children }) => (
+                    <p className="mb-4 mt-4 whitespace-pre-wrap">{children}</p>
+                  ),
+                  h1: ({ node, children }) => (
+                    <h1 className="text-2xl font-bold mt-6 ">{children}</h1>
+                  ),
+                  h2: ({ node, children }) => (
+                    <h2 className="text-xl font-bold mt-6 ">{children}</h2>
+                  ),
+                  h3: ({ node, children }) => (
+                    <h3 className="text-lg font-bold mt-6 ">{children}</h3>
+                  ),
+                  a: ({ node, href, children }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {children}
+                    </a>
+                  ),
+                }}
+              >
+                {plan.itinerary}
+              </ReactMarkdown>
             </div>
             <div className="mt-6 flex justify-between">
               <Link href="/history" passHref>

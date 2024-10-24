@@ -1,5 +1,6 @@
 'use client'
 
+import ReactMarkdown from 'react-markdown';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -172,13 +173,48 @@ export function EditTravelPlanForm({ travelPlan }: EditTravelPlanFormProps) {
         </div>
         <div className="space-y-2">
           <Label htmlFor="itinerary">Itinerary</Label>
-          <Textarea
-            id="itinerary"
-            name="itinerary"
-            value={formData.itinerary}
-            onChange={handleInputChange}
-            rows={20}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <textarea
+                id="itinerary"
+                name="itinerary"
+                value={formData.itinerary}
+                onChange={handleInputChange}
+                rows={20}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div className="p-4 bg-gray-100 rounded-md text-black overflow-auto h-[500px]">
+              <ReactMarkdown
+                components={{
+                  p: ({ node, children }) => (
+                    <p className="mb-4 mt-4 whitespace-pre-wrap">{children}</p>
+                  ),
+                  h1: ({ node, children }) => (
+                    <h1 className="text-2xl font-bold mt-6 ">{children}</h1>
+                  ),
+                  h2: ({ node, children }) => (
+                    <h2 className="text-xl font-bold mt-6 ">{children}</h2>
+                  ),
+                  h3: ({ node, children }) => (
+                    <h3 className="text-lg font-bold mt-6">{children}</h3>
+                  ),
+                  a: ({ node, href, children }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {children}
+                    </a>
+                  ),
+                }}
+              >
+                {formData.itinerary}
+              </ReactMarkdown>
+            </div>
+          </div>
         </div>
         <Button type="submit" className="w-full">Update Travel Plan</Button>
       </form>
