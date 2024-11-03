@@ -12,7 +12,7 @@ export default function Header() {
 
         </a>
       </div>
-      <h1 className="sr-only">AI Travel Planner</h1>
+      <h1 className="sr-only">NotebookML</h1>
       <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
       The AI Travel Planner simplifies trip planning by generating personalized travel itineraries based on user preferences and travel details.{" "}
         <a
